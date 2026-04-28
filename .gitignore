@@ -1,0 +1,10 @@
+Debug/
+Release/
+build/
+**/Debug/
+**/Release/
+**/build/
+.DS_Store
+*.log
+*.tmp
+*.bak
