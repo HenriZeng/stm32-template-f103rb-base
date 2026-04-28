@@ -1,8 +1,8 @@
 # STM32 Template for Nucleo-F103RB
 
-A clean STM32CubeIDE / STM32CubeMX project template for the STM32 Nucleo-F103RB (`STM32F103RBT6`).
+A clean STM32CubeMX source template for the STM32 Nucleo-F103RB (`STM32F103RBT6`).
 
-This repository is intended to be used as a starting point for new STM32 projects. It keeps the common board configuration and generated HAL/CMSIS structure, while removing all application-specific demo logic.
+This repository is intended to be used as a starting point for new STM32 projects. It keeps the common board configuration and generated HAL/CMSIS source tree, while removing application-specific demo logic and excluding STM32CubeIDE project metadata that would otherwise lock the template to a fixed project identity.
 
 ## Template Baseline
 - Board: STM32 Nucleo-F103RB
@@ -16,64 +16,56 @@ This repository is intended to be used as a starting point for new STM32 project
 - UART configuration: `115200 8N1`
 
 ## Included in the Template
-- STM32CubeMX-generated project structure
-- HAL and CMSIS driver tree
+- `Core/` source tree
+- `Drivers/` HAL and CMSIS source tree
 - Basic system clock initialization
 - `GPIOA` enable and `PA5` output initialization
 - `USART2` initialization
 - Startup file and linker script
 - Empty application skeleton in `main.c`
+- CubeMX configuration file `stm32_template.ioc`
 
-## Removed from the Source Demo
-- UART test message transmission
-- LED blink demo loop
-- Temporary or generated build output
+## Intentionally Excluded
+- `.project`
+- `.cproject`
+- `.mxproject`
+- `.settings/`
+- `*.launch`
+- Generated build folders such as `Debug/`, `Release/`, and `build/`
+
+These files are excluded on purpose so a new project can be regenerated with its own project name and IDE metadata.
 
 ## Repository Structure
 ```text
 .
 ├── Core/
 ├── Drivers/
-├── .project
-├── .cproject
-├── .mxproject
-├── .settings/
 ├── STM32F103RBTX_FLASH.ld
 ├── stm32_template.ioc
-├── stm32_template Debug.launch
 ├── RENAME_PROJECT.md
 ├── .gitignore
 └── README.md
 ```
 
 ## How to Use This Template
+1. Create a new repository from this template or clone it locally.
+2. Rename `stm32_template.ioc` to your target project name if needed.
+3. Open the `.ioc` file in STM32CubeMX or STM32CubeIDE.
+4. Change the project name in CubeMX project settings.
+5. Regenerate the STM32CubeIDE project files.
+6. Open the regenerated project in STM32CubeIDE and build it.
 
-### Option 1: Use as a GitHub Template Repository
-1. Push this directory as a standalone GitHub repository.
-2. Mark the repository as a template repository in GitHub settings.
-3. Create a new project from this template.
-4. Rename the project from `stm32_template` to your real project name.
-
-### Option 2: Clone and Reuse Manually
-```bash
-git clone <your-template-repo-url> my_new_project
-cd my_new_project
-```
-
-Then follow the renaming steps in [RENAME_PROJECT.md](RENAME_PROJECT.md).
+## Recommended Workflow
+1. Start from the `.ioc` file, not from pre-generated IDE metadata.
+2. Let STM32CubeMX or STM32CubeIDE regenerate `.project`, `.cproject`, `.settings/`, and launch files for the new project name.
+3. Add application code only inside `USER CODE` sections or separate user modules.
+4. Commit the regenerated project metadata in the new project repository if your team wants to version them.
 
 ## Where to Add Application Code
 - Startup initialization: `Core/Src/main.c` inside `USER CODE BEGIN 2`
 - Main loop logic: `Core/Src/main.c` inside `USER CODE BEGIN 3`
 - User modules: create additional files under `Core/` or your own module folders
 
-## Recommended Workflow
-1. Open the project in STM32CubeIDE.
-2. Build once to regenerate local build output.
-3. Rename the project if this is a new product.
-4. Add application code only inside `USER CODE` sections or separate user modules.
-5. If hardware changes are needed, edit `stm32_template.ioc` and regenerate with STM32CubeMX.
-
 ## Notes
 - This template intentionally keeps `USART2` and `PA5` configured because they are useful for early bring-up and diagnostics.
-- Generated folders such as `Debug/`, `Release/`, and `build/` are excluded by `.gitignore`.
+- If your new project uses different peripherals or pins, update the `.ioc` first and then regenerate code.
